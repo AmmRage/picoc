@@ -531,32 +531,41 @@ void *LexTokenise(Picoc *pc, struct LexState *Lexer, int *TokenLen)
     int MemUsed = 0;
     int ValueSize;
     int ReserveSpace = (Lexer->End - Lexer->Pos) * 4 + 16; 
-    void *TokenSpace = HeapAllocStack(pc, ReserveSpace);
+    void *TokenSpace = HeapAllocStack(pc, ReserveSpace);//申请栈上内存空间，用来保存token和相关信息
     char *TokenPos = (char *)TokenSpace;
     int LastCharacterPos = 0;
+	
 
     if (TokenSpace == NULL)
         LexFail(pc, Lexer, "out of memory");
-    
     do
     { 
         /* store the token at the end of the stack area */
         Token = LexScanGetToken(pc, Lexer, &GotValue);
-
 #ifdef DEBUG_LEXER
         printf("Token: %02x\n", Token);
 #endif
         *(unsigned char *)TokenPos = Token;
         TokenPos++;
         MemUsed++;
-
+		//只保存这个token在行里的位置不保存行号有毛用？
         *(unsigned char *)TokenPos = (unsigned char)LastCharacterPos;
-        TokenPos++;
+#ifdef DEBUG_EXPRESSIONS_ZY
+		PrintTkenName(Token);
+		PrintCharAsInt((const char *)(TokenPos));
+		PrintIntWithCaption("Lexer->CharacterPos :",Lexer->CharacterPos);
+#endif
+
+	    TokenPos++;
         MemUsed++;
+
 
         ValueSize = LexTokenSize(Token);
         if (ValueSize > 0)
         { 
+#ifdef DEBUG_EXPRESSIONS_ZY
+			//printConstStringWithCaption("Identifier: ",(const char *)(GotValue->Val->Identifier));
+#endif
             /* store a value as well */
             memcpy((void *)TokenPos, (void *)GotValue->Val, ValueSize);
             TokenPos += ValueSize;
@@ -572,8 +581,8 @@ void *LexTokenise(Picoc *pc, struct LexState *Lexer, int *TokenLen)
         LexFail(pc, Lexer, "out of memory");
         
     assert(ReserveSpace >= MemUsed);
-    memcpy(HeapMem, TokenSpace, MemUsed);
-    HeapPopStack(pc, TokenSpace, ReserveSpace);
+    memcpy(HeapMem, TokenSpace, MemUsed);//将分析出的token拷贝到堆空间
+    HeapPopStack(pc, TokenSpace, ReserveSpace);//释放函数开始时申请的栈空间
 #ifdef DEBUG_LEXER
     {
         int Count;
@@ -585,15 +594,18 @@ void *LexTokenise(Picoc *pc, struct LexState *Lexer, int *TokenLen)
 #endif
     if (TokenLen)
         *TokenLen = MemUsed;
-    
+
     return HeapMem;
 }
 
 /* lexically analyse some source text */
 void *LexAnalyse(Picoc *pc, const char *FileName, const char *Source, int SourceLen, int *TokenLen)
 {
+
     struct LexState Lexer;
-    
+#ifdef DEBUG_EXPRESSIONS_ZY
+	printf(FileName);
+#endif    
     Lexer.Pos = Source;
     Lexer.End = Source + SourceLen;
     Lexer.Line = 1;

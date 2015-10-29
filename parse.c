@@ -3,6 +3,8 @@
 #include "picoc.h"
 #include "interpreter.h"
 
+
+
 /* deallocate any memory */
 void ParseCleanup(Picoc *pc)
 {
@@ -581,7 +583,9 @@ enum ParseResult ParseStatement(struct ParseState *Parser, int CheckTrailingSemi
     /* take note of where we are and then grab a token to see what statement we have */   
     ParserCopy(&PreState, Parser);
     Token = LexGetToken(Parser, &LexerValue, TRUE);
-    
+#ifdef DEBUG_EXPRESSIONS_ZY
+	PrintTkenName(Token);
+#endif
     switch (Token)
     {
         case TokenEOF:
@@ -939,7 +943,7 @@ void PicocParse(Picoc *pc, const char *FileName, const char *Source, int SourceL
     enum ParseResult Ok;
     struct CleanupTokenNode *NewCleanupNode;
     char *RegFileName = TableStrRegister(pc, FileName);
-    
+    //´Ê·¨·ÖÎö
     void *Tokens = LexAnalyse(pc, RegFileName, Source, SourceLen, NULL);
     
     /* allocate a cleanup node so we can clean up the tokens later */

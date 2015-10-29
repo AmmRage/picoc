@@ -14,6 +14,7 @@
 
 #define DEEP_PRECEDENCE (BRACKET_PRECEDENCE*1000)
 
+
 #ifdef DEBUG_EXPRESSIONS
 #define debugf printf
 #else
@@ -1094,6 +1095,7 @@ int ExpressionParse(struct ParseState *Parser, struct Value **Result)
 
         ParserCopy(&PreState, Parser);
         Token = LexGetToken(Parser, &LexValue, TRUE);
+
         if ( ( ( (int)Token > TokenComma && (int)Token <= (int)TokenOpenBracket) || 
                (Token == TokenCloseBracket && BracketPrecedence != 0)) && 
                (Token != TokenColon || TernaryDepth > 0) )
@@ -1348,6 +1350,7 @@ int ExpressionParse(struct ParseState *Parser, struct Value **Result)
     }
     
     debugf("ExpressionParse() done\n\n");
+
 #ifdef DEBUG_EXPRESSIONS
     ExpressionStackShow(Parser->pc, StackTop);
 #endif

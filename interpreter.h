@@ -7,6 +7,8 @@
 
 #include "platform.h"
 
+//zhiy
+#define DEBUG_EXPRESSIONS_ZY
 
 /* handy definitions */
 #ifndef TRUE
@@ -228,6 +230,7 @@ struct Value
 };
 
 /* hash table data structure */
+/*µ•œÚ¡¥±Ì*/
 struct TableEntry
 {
     struct TableEntry *Next;        /* next item in this hash chain */
@@ -492,6 +495,8 @@ void LexInteractiveClear(Picoc *pc, struct ParseState *Parser);
 void LexInteractiveCompleted(Picoc *pc, struct ParseState *Parser);
 void LexInteractiveStatementPrompt(Picoc *pc);
 
+
+
 /* parse.c */
 /* the following are defined in picoc.h:
  * void PicocParse(const char *FileName, const char *Source, int SourceLen, int RunIt, int CleanupNow, int CleanupSource);
@@ -651,5 +656,16 @@ void StdboolSetupFunc(Picoc *pc);
 extern const char UnistdDefs[];
 extern struct LibraryFunction UnistdFunctions[];
 void UnistdSetupFunc(Picoc *pc);
+
+/* trace.c */
+void PrintTkenName(enum LexToken Token);
+
+void PrintCharAsInt(const char *ch);
+
+void printConstString(const char * ch);
+
+void printConstStringWithCaption(const char* caption, const char * ch);
+
+void PrintIntWithCaption(const char* caption, int intToPrint);
 
 #endif /* INTERPRETER_H */
