@@ -50,10 +50,8 @@ int main(int argc, char **argv)
             return pc.PicocExitValue;
         }
         
-		//scan parse and run
         for (; ParamCount < argc && strcmp(argv[ParamCount], "-") != 0; ParamCount++)
-
-			PicocPlatformScanFile(&pc, argv[ParamCount]);
+            PicocPlatformScanFile(&pc, argv[ParamCount]);
         
         if (!DontRunMain)
             PicocCallMain(&pc, argc - ParamCount, &argv[ParamCount]);

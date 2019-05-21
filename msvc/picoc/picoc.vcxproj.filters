@@ -16,9 +16,6 @@
     <Filter Include="Source Files\cstdlib">
       <UniqueIdentifier>{9cc822ce-c7ed-4deb-93d2-ab0077cfe681}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\trace">
-      <UniqueIdentifier>{310548c0-05a1-47f2-a8f5-ea832606f530}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\clibrary.c">
@@ -86,9 +83,6 @@
     </ClCompile>
     <ClCompile Include="..\..\platform\platform_msvc.c">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="trace.c">
-      <Filter>Source Files\trace</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
